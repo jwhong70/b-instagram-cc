@@ -1,0 +1,22 @@
+{
+  "name": "b-instagram-cc",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "nodemon --exec babel-node server --delay 2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/node": "^7.20.2",
+    "apollo-server": "^3.11.1",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.6.1"
+  }
+}
