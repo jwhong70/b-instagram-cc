@@ -1,15 +1,30 @@
 import bcrypt from "bcrypt";
 import client from "../../client";
 import { protectedResolver } from "../users.utils";
+import { GraphQLUpload } from "graphql-upload";
+import { uploadToS3 } from "../../shared/shared.utils";
 
 export default {
+  Upload: GraphQLUpload,
   Mutation: {
     editProfile: protectedResolver(
       async (
         _,
-        { firstName, lastName, username, email, password: newPassword },
+        {
+          firstName,
+          lastName,
+          username,
+          email,
+          password: newPassword,
+          bio,
+          avatar,
+        },
         { loggedInUser }
       ) => {
+        let avatarUrl = null;
+        if (avatar) {
+          avatarUrl = await uploadToS3(avatar, loggedInUser.id, "avatars");
+        }
         let uglyPassword = null;
         if (newPassword) {
           uglyPassword = await bcrypt.hash(newPassword, 10);
@@ -22,6 +37,8 @@ export default {
             username,
             email,
             ...(uglyPassword && { password: uglyPassword }),
+            bio,
+            ...(avatarUrl && { avatar: avatarUrl }),
           },
         });
         if (updatedUser.id) {

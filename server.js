@@ -8,10 +8,13 @@ import {
 } from "apollo-server-core";
 import schema from "./schema";
 import { getUser } from "./users/users.utils";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const PORT = process.env.PORT;
 async function startServer() {
   const app = express();
+  app.use("/static", express.static("uploads"));
+  app.use(graphqlUploadExpress());
   const httpServer = createServer(app);
   const apollo = new ApolloServer({
     schema,
