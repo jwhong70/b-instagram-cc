@@ -35,7 +35,7 @@ export default {
             user: { connect: { id: loggedInUser.id } },
           },
         });
-        return { id: message.id, ok: true };
+        return { ok: true };
       }
     ),
   },
