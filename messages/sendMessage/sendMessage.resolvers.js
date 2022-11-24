@@ -1,5 +1,7 @@
 import client from "../../client";
 import { protectedResolver } from "../../users/users.utils";
+import { NEW_MESSAGE } from "../../constants";
+import pubsub from "../../pubsub";
 
 export default {
   Mutation: {
@@ -35,6 +37,7 @@ export default {
             user: { connect: { id: loggedInUser.id } },
           },
         });
+        pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } });
         return { ok: true };
       }
     ),
