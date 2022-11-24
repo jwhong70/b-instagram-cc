@@ -30,7 +30,7 @@ export default {
             return { ok: false, error: "Room not found." };
           }
         }
-        await client.message.create({
+        const message = await client.message.create({
           data: {
             payload,
             room: { connect: { id: room.id } },

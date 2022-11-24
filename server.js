@@ -22,7 +22,17 @@ async function startServer() {
     server: httpServer,
     path: "/graphql",
   });
-  const serverCleanup = useServer({ schema }, wsServer);
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: async ({ connectionParams }) => {
+        if (connectionParams) {
+          return { loggedInUser: await getUser(connectionParams.token) };
+        }
+      },
+    },
+    wsServer
+  );
   const apollo = new ApolloServer({
     schema,
     context: async ({ req }) => {
